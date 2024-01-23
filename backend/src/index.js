@@ -1,40 +1,45 @@
-import dotenv from "dotenv"
-import connectDB from "./db/db.js"
-import express from "express"
-import userRoutes from "./routes/user.routes.js"
-import authRoutes from "./routes/auth.routes.js"
-//configure dotenv package
+import dotenv from "dotenv";
+import connectDB from "./db/db.js";
+import express from "express";
+import userRoutes from "./routes/user.routes.js";
+import authRoutes from "./routes/auth.routes.js";
+
+// Configure dotenv package
 dotenv.config({
-    path:'./.env'
-})
+    path: './.env'
+});
 
-//connecting the Database with the backend
+// Connect to the Database with the backend
 connectDB()
-.then(()=>{
-    console.log("connected to MongoDB")
-})
-.catch((error)=>{
-    console.log(error)
-})
+    .then(() => {
+        console.log("Connected to MongoDB");
+    })
+    .catch((error) => {
+        console.error(error);
+        process.exit(1); // Exit the process if unable to connect to the database
+    });
 
-//connection to our app
+// Create Express app
+const app = express();
+app.use(express.json());
 
-const app = express()
-app.use(express.json())
-app.listen( process.env.PORT ||3000, ()=>{
-    console.log(`listening on ${process.env.PORT}`)
-})
-//routes
-app.use("/api/user",userRoutes)
-app.use("/api/auth", authRoutes)
+// Start the server
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`Listening on ${PORT}`);
+});
 
-//middleware
-app.use((err,req,res,next)=>{
-    const statuscode = err.statuscode || 500
-    const message = err.message || 'Internal Server Error'
+// Routes
+app.use("/api/user", userRoutes);
+app.use("/api/auth", authRoutes);
+
+// Middleware for handling errors
+app.use((err, req, res, next) => {
+    const statuscode = err.statuscode || 500;
+    const message = err.message || 'Internal Server Error';
     return res.status(statuscode).json({
-        success : false,
+        success: false,
         message,
         statuscode
-    })
-})
+    });
+});
