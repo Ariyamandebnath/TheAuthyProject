@@ -35,6 +35,7 @@ app.use("/api/auth", authRoutes);
 
 // Middleware for handling errors
 app.use((err, req, res, next) => {
+<<<<<<< HEAD
     const statuscode = err.statuscode || 500;
     const message = err.message || 'Internal Server Error';
     return res.status(statuscode).json({
@@ -43,3 +44,13 @@ app.use((err, req, res, next) => {
         statuscode
     });
 });
+=======
+    const statusCode = err.statusCode || 500;
+    const message = err.message || 'Internal Server Error';
+    return res.status(statusCode).json({
+      success: false,
+      message,
+      statusCode,
+    });
+  });
+>>>>>>> 4ff9575 (add sign in functionality)
