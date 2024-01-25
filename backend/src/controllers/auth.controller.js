@@ -33,5 +33,10 @@ export const signup = async (req, res, next) => {
     } catch (error) {
       next(error);
     }
+<<<<<<< HEAD
 >>>>>>> 4ff9575 (add sign in functionality)
   };
+=======
+  };//signing in
+  
+>>>>>>> f70118b (added signin functionality)
